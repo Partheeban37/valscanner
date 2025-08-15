@@ -1,0 +1,17 @@
+# Copy this file to terraform.tfvars (and edit) before applying.
+
+project_name   = "vulnscan"
+network_name   = "vulnscan-net"
+db_volume_name = "vulnscan-db-data"
+# --- DB settings (copy to terraform.tfvars and edit) ---
+db_name     = "vulnscan_db"
+db_user     = "vulnuser"
+db_password = "mr.looser37"
+db_port     = 5432
+db_image    = "postgres:15"
+# --- Backend settings ---
+backend_image = "nginxdemos/hello"
+backend_port  = 8080
+# --- Frontend settings ---
+frontend_image = "nginxdemos/hello"
+frontend_port  = 3000
