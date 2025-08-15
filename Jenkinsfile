@@ -18,5 +18,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Terraform Provisioning') {
+            steps {
+                script {
+                    // Initialize Terraform
+                    sh 'terraform init'
+                    // Apply Terraform to provision infrastructure
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
     }
 }
