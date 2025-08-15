@@ -1,0 +1,55 @@
+.App {
+  background-color: #1e1e1e;
+  color: #c0c0c0;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 20px;
+}
+
+.App.hacker {
+  background-color: #0a0a0a;
+  color: #00ff00;
+}
+
+input, button {
+  background-color: #111;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 8px;
+  margin: 5px 5px 5px 0;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #00ff00;
+  color: #000;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.output {
+  background-color: #000;
+  color: #00ff00;
+  padding: 10px;
+  border: 1px solid #00ff00;
+  white-space: pre-wrap;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Hacker flicker effect */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 22%, 24%, 55% { opacity: 0.4; }
+}
+
+.App.hacker .output {
+  animation: flicker 1.5s infinite;
+}
