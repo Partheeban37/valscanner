@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Terraform variables can be passed as environment variables if needed
         DB_HOST = "localhost"
         DB_USER = "vulnuser"
         DB_PASSWORD = "mr.looser37"
@@ -28,6 +27,15 @@ pipeline {
             }
         }
 
+        stage('Cleanup Old Containers') {
+            steps {
+                script {
+                    // Remove any old vulnscan containers to avoid port conflicts
+                    sh 'docker ps -aq --filter "name=vulnscan" | xargs -r docker rm -f || true'
+                }
+            }
+        }
+
         stage('Terraform Provisioning') {
             steps {
                 script {
@@ -35,35 +43,6 @@ pipeline {
                     sh 'terraform init'
                     // Apply Terraform to provision infrastructure
                     sh 'terraform apply -auto-approve'
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    // Stop any existing containers
-                    sh 'docker rm -f vulnscanner-backend || true'
-                    sh 'docker rm -f vulnscan-frontend || true'
-
-                    // Run backend container with credentials from environment
-                    sh """
-                    docker run -d \
-                    --name vulnscanner-backend \
-                    -p ${BACKEND_PORT}:${BACKEND_PORT} \
-                    -e DB_HOST=${DB_HOST} \
-                    -e DB_USER=${DB_USER} \
-                    -e DB_PASSWORD=${DB_PASSWORD} \
-                    vulnscanner-backend:latest
-                    """
-
-                    // Run frontend container
-                    sh """
-                    docker run -d \
-                    --name vulnscan-frontend \
-                    -p ${FRONTEND_PORT}:${FRONTEND_PORT} \
-                    vulnscan-frontend:latest
-                    """
                 }
             }
         }
